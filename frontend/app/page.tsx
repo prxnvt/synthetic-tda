@@ -69,7 +69,25 @@ export default function Home() {
         {/* Topological Features + Anomaly Detection (same container, x-axes aligned) */}
         {state.pipelineResult && (
           <section className="relative">
-            <div className="sec-label mb-1">Topological Features</div>
+            <div className="flex items-baseline gap-6 mb-3">
+              <div className="sec-label">Topological Features</div>
+              <div className="flex items-baseline gap-4" style={{ fontFamily: "var(--mono)", fontSize: 11 }}>
+                <span>
+                  <span style={{ color: "var(--muted)" }}>windows </span>
+                  <span style={{ color: "var(--foreground)", fontWeight: 600 }}>{state.pipelineResult.num_windows}</span>
+                </span>
+                <span>
+                  <span style={{ color: "var(--muted)" }}>anomalies </span>
+                  <span style={{ color: state.pipelineResult.anomalies.filter(Boolean).length > 0 ? "#ef4444" : "#22c55e", fontWeight: 600 }}>
+                    {state.pipelineResult.anomalies.filter(Boolean).length}
+                  </span>
+                </span>
+                <span>
+                  <span style={{ color: "var(--muted)" }}>computed in </span>
+                  <span style={{ color: "var(--foreground)", fontWeight: 600 }}>{state.pipelineResult.computation_time_ms.toFixed(0)}ms</span>
+                </span>
+              </div>
+            </div>
             {state.isPipelineStale && !state.isRunning && (
               <div className="stale-overlay">
                 <span>Parameters changed — Re-run analysis</span>

@@ -324,48 +324,6 @@ export default function Sidebar({ state }: SidebarProps) {
         </button>
       </section>
 
-      {/* Status */}
-      {state.pipelineResult && (
-        <section>
-          <div
-            className="sec-label mb-2 pb-1"
-            style={{ borderBottom: "1px solid var(--sidebar-border)" }}
-          >
-            Results
-          </div>
-          <div
-            className="text-[11px] space-y-0.5"
-            style={{ fontFamily: "var(--mono)", color: "var(--muted)" }}
-          >
-            <div className="flex justify-between">
-              <span>Computation</span>
-              <span style={{ color: "var(--foreground)" }}>
-                {state.pipelineResult.computation_time_ms.toFixed(0)}ms
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span>Windows</span>
-              <span style={{ color: "var(--foreground)" }}>
-                {state.pipelineResult.num_windows}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span>Anomalies</span>
-              <span
-                style={{
-                  color:
-                    state.pipelineResult.anomalies.filter(Boolean).length > 0
-                      ? "#ef4444"
-                      : "#22c55e",
-                }}
-              >
-                {state.pipelineResult.anomalies.filter(Boolean).length}
-              </span>
-            </div>
-          </div>
-        </section>
-      )}
-
       {state.error && (
         <div
           className="p-2 rounded text-[11px]"
