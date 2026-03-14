@@ -9,11 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/katex": "^0.16.8",
+    "@types/react-katex": "^3.0.4",
     "@types/react-plotly.js": "^2.6.4",
+    "katex": "^0.16.38",
     "next": "16.1.6",
     "plotly.js-dist-min": "^3.4.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-katex": "^3.1.0",
     "react-plotly.js": "^2.6.0"
   },
   "devDependencies": {

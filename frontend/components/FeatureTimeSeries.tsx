@@ -1,7 +1,9 @@
 "use client";
 
+import React from "react";
 import dynamic from "next/dynamic";
 import { PipelineResponse, SignalResponse } from "@/lib/types";
+import { PLOTLY_LAYOUT_DEFAULTS, PLOTLY_CONFIG } from "@/lib/plotly-theme";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -10,22 +12,15 @@ interface FeatureTimeSeriesProps {
   signalData: SignalResponse | null;
 }
 
-export default function FeatureTimeSeries({
+function FeatureTimeSeriesInner({
   pipelineResult,
   signalData,
 }: FeatureTimeSeriesProps) {
-  if (!pipelineResult) {
-    return (
-      <div className="h-32 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 rounded-lg">
-        Run the analysis pipeline to see topological features
-      </div>
-    );
-  }
+  if (!pipelineResult) return null;
 
   const x = pipelineResult.window_centers;
   const features = pipelineResult.features;
 
-  // Build regime boundary lines
   const regimeBoundaries: Partial<Plotly.Shape>[] = [];
   if (signalData) {
     for (let i = 1; i < signalData.regime_labels.length; i++) {
@@ -38,28 +33,20 @@ export default function FeatureTimeSeries({
           x1: i,
           y0: 0,
           y1: 1,
-          line: { color: "red", dash: "dash", width: 1 },
+          line: { color: "#ef4444", dash: "dash", width: 1 },
         });
       }
     }
   }
 
   const featureConfigs = [
-    {
-      key: "max_persistence_h1",
-      label: "Max H₁ Persistence",
-      color: "#ff7f0e",
-    },
-    {
-      key: "total_persistence_h1",
-      label: "Total H₁ Persistence",
-      color: "#2ca02c",
-    },
-    { key: "num_h1", label: "H₁ Count", color: "#1f77b4" },
+    { key: "max_persistence_h1", label: "Max H\u2081 Persistence", color: "#f97316" },
+    { key: "total_persistence_h1", label: "Total H\u2081 Persistence", color: "#22c55e" },
+    { key: "num_h1", label: "H\u2081 Count", color: "#3b82f6" },
   ].filter((f) => features[f.key]);
 
   return (
-    <div className="space-y-1">
+    <div>
       {featureConfigs.map((cfg) => {
         const vals = features[cfg.key];
         const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
@@ -81,11 +68,21 @@ export default function FeatureTimeSeries({
               },
             ]}
             layout={{
-              height: 150,
-              margin: { l: 55, r: 20, t: 25, b: 25 },
-              title: { text: cfg.label, font: { size: 11 } },
-              xaxis: { title: { text: "" } },
-              yaxis: { title: { text: "" }, zeroline: false },
+              ...PLOTLY_LAYOUT_DEFAULTS,
+              height: 120,
+              margin: { l: 48, r: 12, t: 18, b: 16 },
+              title: {
+                text: cfg.label,
+                font: { size: 10, color: "#334155", family: "var(--font-geist-mono), monospace" },
+                x: 0.005,
+                xanchor: "left",
+              },
+              xaxis: { ...PLOTLY_LAYOUT_DEFAULTS.xaxis, title: { text: "" } },
+              yaxis: {
+                ...PLOTLY_LAYOUT_DEFAULTS.yaxis,
+                title: { text: "" },
+                zeroline: false,
+              },
               shapes: [
                 ...regimeBoundaries,
                 {
@@ -96,7 +93,7 @@ export default function FeatureTimeSeries({
                   x1: 1,
                   y0: mean + 2 * std,
                   y1: mean + 2 * std,
-                  line: { color: "gray", dash: "dash", width: 1 },
+                  line: { color: "#94a3b8", dash: "dash", width: 1 },
                 },
                 {
                   type: "line",
@@ -106,12 +103,12 @@ export default function FeatureTimeSeries({
                   x1: 1,
                   y0: mean - 2 * std,
                   y1: mean - 2 * std,
-                  line: { color: "gray", dash: "dash", width: 1 },
+                  line: { color: "#94a3b8", dash: "dash", width: 1 },
                 },
               ],
               showlegend: false,
             }}
-            config={{ responsive: true, displayModeBar: false }}
+            config={PLOTLY_CONFIG}
             useResizeHandler
             style={{ width: "100%" }}
           />
@@ -120,3 +117,6 @@ export default function FeatureTimeSeries({
     </div>
   );
 }
+
+const FeatureTimeSeries = React.memo(FeatureTimeSeriesInner);
+export default FeatureTimeSeries;

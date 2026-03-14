@@ -6,10 +6,19 @@ import {
   PipelineParams,
 } from "@/lib/types";
 import { PipelineState } from "@/hooks/usePipeline";
+import PipelineInfo from "./PipelineInfo";
 
 const SIGNAL_PARAM_CONFIGS: Record<
   SignalType,
-  { key: string; label: string; min: number; max: number; step: number; type?: "select"; options?: string[] }[]
+  {
+    key: string;
+    label: string;
+    min: number;
+    max: number;
+    step: number;
+    type?: "select";
+    options?: string[];
+  }[]
 > = {
   sine_to_noise: [
     { key: "period", label: "Period", min: 10, max: 200, step: 1 },
@@ -55,21 +64,45 @@ export default function Sidebar({ state }: SidebarProps) {
   const paramConfigs = SIGNAL_PARAM_CONFIGS[state.signalParams.signal_type];
 
   return (
-    <aside className="w-80 min-w-80 h-screen overflow-y-auto bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-6 max-lg:w-full max-lg:h-auto max-lg:border-r-0 max-lg:border-b">
+    <aside
+      className="w-72 min-w-72 flex-shrink-0 flex flex-col gap-5 p-4 max-lg:w-full"
+      style={{
+        background: "var(--sidebar-bg)",
+        borderRight: "1px solid var(--sidebar-border)",
+      }}
+    >
+      {/* Header */}
       <div>
-        <h1 className="text-lg font-bold mb-1">Synthetic TDA</h1>
-        <p className="text-xs text-gray-500">Topological Data Analysis Demo</p>
+        <h1
+          className="text-sm font-bold tracking-tight"
+          style={{ fontFamily: "var(--mono)", color: "var(--foreground)" }}
+        >
+          synthetic-tda
+        </h1>
+        <div className="mt-2">
+          <PipelineInfo />
+        </div>
       </div>
 
       {/* Signal Configuration */}
       <section>
-        <h2 className="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-          Signal
-        </h2>
+        <div
+          className="sec-label mb-2 pb-1"
+          style={{ borderBottom: "1px solid var(--sidebar-border)" }}
+        >
+          Signal Generator
+        </div>
 
-        <label className="block text-xs font-medium mb-1">Signal Type</label>
+        <label className="block text-[11px] mb-1" style={{ color: "var(--muted)" }}>
+          Type
+        </label>
         <select
-          className="w-full mb-3 px-2 py-1.5 text-sm border rounded bg-white dark:bg-gray-800 dark:border-gray-600"
+          className="w-full mb-3 px-2 py-1.5 text-[11px] rounded border outline-none"
+          style={{
+            borderColor: "var(--sidebar-border)",
+            fontFamily: "var(--mono)",
+            background: "white",
+          }}
           value={state.signalParams.signal_type}
           onChange={(e) => state.setSignalType(e.target.value as SignalType)}
         >
@@ -82,15 +115,25 @@ export default function Sidebar({ state }: SidebarProps) {
 
         {paramConfigs.map((cfg) => (
           <div key={cfg.key} className="mb-2">
-            <div className="flex justify-between text-xs mb-0.5">
-              <label className="font-medium">{cfg.label}</label>
-              <span className="text-gray-500">
+            <div className="flex justify-between items-baseline mb-0.5">
+              <label className="text-[11px]" style={{ color: "var(--muted)" }}>
+                {cfg.label}
+              </label>
+              <span
+                className="text-[11px] font-medium"
+                style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}
+              >
                 {state.signalParams.params[cfg.key]}
               </span>
             </div>
             {cfg.type === "select" ? (
               <select
-                className="w-full px-2 py-1 text-sm border rounded bg-white dark:bg-gray-800 dark:border-gray-600"
+                className="w-full px-2 py-1 text-[11px] rounded border outline-none"
+                style={{
+                  borderColor: "var(--sidebar-border)",
+                  fontFamily: "var(--mono)",
+                  background: "white",
+                }}
                 value={state.signalParams.params[cfg.key] as string}
                 onChange={(e) =>
                   state.updateSignalParams({ [cfg.key]: e.target.value })
@@ -121,9 +164,16 @@ export default function Sidebar({ state }: SidebarProps) {
         ))}
 
         <div className="mb-2">
-          <div className="flex justify-between text-xs mb-0.5">
-            <label className="font-medium">Signal Length</label>
-            <span className="text-gray-500">{state.signalParams.length}</span>
+          <div className="flex justify-between items-baseline mb-0.5">
+            <label className="text-[11px]" style={{ color: "var(--muted)" }}>
+              Length
+            </label>
+            <span
+              className="text-[11px] font-medium"
+              style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}
+            >
+              {state.signalParams.length}
+            </span>
           </div>
           <input
             type="range"
@@ -137,42 +187,74 @@ export default function Sidebar({ state }: SidebarProps) {
         </div>
 
         <div className="mb-3">
-          <label className="block text-xs font-medium mb-0.5">Seed</label>
+          <label className="block text-[11px] mb-0.5" style={{ color: "var(--muted)" }}>
+            Seed
+          </label>
           <input
             type="number"
-            className="w-full px-2 py-1 text-sm border rounded bg-white dark:bg-gray-800 dark:border-gray-600"
+            className="w-full px-2 py-1 text-[11px] rounded border outline-none"
+            style={{
+              borderColor: "var(--sidebar-border)",
+              fontFamily: "var(--mono)",
+              background: "white",
+            }}
             value={state.signalParams.seed}
             onChange={(e) => state.updateSeed(parseInt(e.target.value) || 0)}
           />
         </div>
 
         <button
-          className="w-full py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-1.5 text-[11px] font-medium rounded transition-colors disabled:opacity-40"
+          style={{
+            background: state.isSignalStale ? "var(--accent)" : "var(--sidebar-border)",
+            color: state.isSignalStale ? "white" : "var(--foreground)",
+            fontFamily: "var(--mono)",
+          }}
           onClick={state.generateSignal}
           disabled={state.isGenerating}
         >
-          {state.isGenerating ? "Generating..." : "Generate Signal"}
+          {state.isGenerating
+            ? "generating..."
+            : state.isSignalStale
+            ? "regenerate signal"
+            : "generate signal"}
         </button>
       </section>
 
       {/* Pipeline Configuration */}
       <section>
-        <h2 className="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-          Pipeline
-        </h2>
+        <div
+          className="sec-label mb-2 pb-1"
+          style={{ borderBottom: "1px solid var(--sidebar-border)" }}
+        >
+          Pipeline Parameters
+        </div>
 
-        {([
-          { key: "window_size" as const, label: "Window Size", min: 50, max: 300, step: 10 },
-          { key: "step_size" as const, label: "Step Size", min: 5, max: 50, step: 5 },
-          { key: "embedding_delay" as const, label: "Delay (tau)", min: 1, max: 10, step: 1 },
-          { key: "max_edge_length" as const, label: "Max Edge Length", min: 0.5, max: 5, step: 0.1 },
-          { key: "anomaly_threshold_sigma" as const, label: "Threshold (sigma)", min: 1.0, max: 4.0, step: 0.1 },
-          { key: "subsample_size" as const, label: "Subsample Size", min: 50, max: 200, step: 10 },
-        ] as { key: keyof PipelineParams; label: string; min: number; max: number; step: number }[]).map((cfg) => (
+        {(
+          [
+            { key: "window_size" as const, label: "Window Size", min: 50, max: 300, step: 10 },
+            { key: "step_size" as const, label: "Step Size", min: 5, max: 50, step: 5 },
+            { key: "embedding_delay" as const, label: "Delay (\u03c4)", min: 1, max: 10, step: 1 },
+            { key: "max_edge_length" as const, label: "Max Edge Length", min: 0.5, max: 5, step: 0.1 },
+            { key: "anomaly_threshold_sigma" as const, label: "Threshold (\u03c3)", min: 1.0, max: 4.0, step: 0.1 },
+            { key: "subsample_size" as const, label: "Subsample Size", min: 50, max: 200, step: 10 },
+          ] as {
+            key: keyof PipelineParams;
+            label: string;
+            min: number;
+            max: number;
+            step: number;
+          }[]
+        ).map((cfg) => (
           <div key={cfg.key} className="mb-2">
-            <div className="flex justify-between text-xs mb-0.5">
-              <label className="font-medium">{cfg.label}</label>
-              <span className="text-gray-500">
+            <div className="flex justify-between items-baseline mb-0.5">
+              <label className="text-[11px]" style={{ color: "var(--muted)" }}>
+                {cfg.label}
+              </label>
+              <span
+                className="text-[11px] font-medium"
+                style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}
+              >
                 {state.pipelineParams[cfg.key]}
               </span>
             </div>
@@ -193,11 +275,16 @@ export default function Sidebar({ state }: SidebarProps) {
         ))}
 
         <div className="mb-3">
-          <label className="block text-xs font-medium mb-0.5">
+          <label className="block text-[11px] mb-0.5" style={{ color: "var(--muted)" }}>
             Embedding Dimension
           </label>
           <select
-            className="w-full px-2 py-1 text-sm border rounded bg-white dark:bg-gray-800 dark:border-gray-600"
+            className="w-full px-2 py-1 text-[11px] rounded border outline-none"
+            style={{
+              borderColor: "var(--sidebar-border)",
+              fontFamily: "var(--mono)",
+              background: "white",
+            }}
             value={state.pipelineParams.embedding_dimension}
             onChange={(e) =>
               state.updatePipelineParams({
@@ -214,36 +301,76 @@ export default function Sidebar({ state }: SidebarProps) {
         </div>
 
         <button
-          className="w-full py-2 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-1.5 text-[11px] font-medium rounded transition-colors disabled:opacity-40"
+          style={{
+            background:
+              state.isPipelineStale && state.signalData
+                ? "var(--accent)"
+                : "var(--sidebar-border)",
+            color:
+              state.isPipelineStale && state.signalData
+                ? "white"
+                : "var(--foreground)",
+            fontFamily: "var(--mono)",
+          }}
           onClick={state.runPipeline}
           disabled={!state.signalData || state.isRunning}
         >
-          {state.isRunning ? "Running..." : "Run Analysis"}
+          {state.isRunning
+            ? "running..."
+            : state.isPipelineStale
+            ? "re-run analysis"
+            : "run analysis"}
         </button>
       </section>
 
       {/* Status */}
       {state.pipelineResult && (
         <section>
-          <h2 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-            Status
-          </h2>
-          <div className="text-xs space-y-1 text-gray-600 dark:text-gray-400">
-            <p>
-              Computation: {state.pipelineResult.computation_time_ms.toFixed(0)}
-              ms
-            </p>
-            <p>Windows: {state.pipelineResult.num_windows}</p>
-            <p>
-              Anomalies:{" "}
-              {state.pipelineResult.anomalies.filter(Boolean).length}
-            </p>
+          <div
+            className="sec-label mb-2 pb-1"
+            style={{ borderBottom: "1px solid var(--sidebar-border)" }}
+          >
+            Results
+          </div>
+          <div
+            className="text-[11px] space-y-0.5"
+            style={{ fontFamily: "var(--mono)", color: "var(--muted)" }}
+          >
+            <div className="flex justify-between">
+              <span>computation</span>
+              <span style={{ color: "var(--foreground)" }}>
+                {state.pipelineResult.computation_time_ms.toFixed(0)}ms
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span>windows</span>
+              <span style={{ color: "var(--foreground)" }}>
+                {state.pipelineResult.num_windows}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span>anomalies</span>
+              <span
+                style={{
+                  color:
+                    state.pipelineResult.anomalies.filter(Boolean).length > 0
+                      ? "#ef4444"
+                      : "#22c55e",
+                }}
+              >
+                {state.pipelineResult.anomalies.filter(Boolean).length}
+              </span>
+            </div>
           </div>
         </section>
       )}
 
       {state.error && (
-        <div className="p-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs rounded">
+        <div
+          className="p-2 rounded text-[11px]"
+          style={{ background: "#fef2f2", color: "#ef4444" }}
+        >
           {state.error}
         </div>
       )}

@@ -1,7 +1,9 @@
 "use client";
 
+import React from "react";
 import dynamic from "next/dynamic";
 import { SignalResponse, PipelineResponse, REGIME_COLORS } from "@/lib/types";
+import { PLOTLY_LAYOUT_DEFAULTS, PLOTLY_CONFIG } from "@/lib/plotly-theme";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -14,7 +16,7 @@ interface SignalPlotProps {
   onWindowClick?: (index: number) => void;
 }
 
-export default function SignalPlot({
+function SignalPlotInner({
   signalData,
   pipelineResult,
   selectedWindowIndex,
@@ -22,17 +24,10 @@ export default function SignalPlot({
   stepSize,
   onWindowClick,
 }: SignalPlotProps) {
-  if (!signalData) {
-    return (
-      <div className="h-64 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 rounded-lg">
-        Generate a signal to begin
-      </div>
-    );
-  }
+  if (!signalData) return null;
 
   const x = Array.from({ length: signalData.length }, (_, i) => i);
 
-  // Build regime background shapes
   const shapes: Partial<Plotly.Shape>[] = [];
   let currentRegime = signalData.regime_labels[0];
   let regimeStart = 0;
@@ -61,7 +56,6 @@ export default function SignalPlot({
     }
   }
 
-  // Anomaly overlay
   if (pipelineResult) {
     pipelineResult.anomalies.forEach((isAnomaly, i) => {
       if (isAnomaly) {
@@ -74,27 +68,11 @@ export default function SignalPlot({
           x1: center + stepSize / 2,
           y0: 0,
           y1: 1,
-          fillcolor: "rgba(244, 67, 54, 0.3)",
+          fillcolor: "rgba(239, 68, 68, 0.2)",
           line: { width: 0 },
           layer: "below",
         });
       }
-    });
-
-    // Selected window highlight
-    const winStart = selectedWindowIndex * stepSize;
-    const winEnd = winStart + windowSize;
-    shapes.push({
-      type: "rect",
-      xref: "x",
-      yref: "paper",
-      x0: winStart,
-      x1: winEnd,
-      y0: 0,
-      y1: 1,
-      fillcolor: "rgba(33, 150, 243, 0.15)",
-      line: { color: "rgba(33, 150, 243, 0.6)", width: 1.5 },
-      layer: "below",
     });
   }
 
@@ -106,35 +84,33 @@ export default function SignalPlot({
           y: signalData.signal,
           type: "scatter",
           mode: "lines",
-          line: { width: 1, color: "#333" },
+          line: { width: 1, color: "#334155" },
           hovertemplate: "t=%{x}<br>value=%{y:.4f}<extra></extra>",
         },
       ]}
       layout={{
-        height: 250,
-        margin: { l: 50, r: 20, t: 30, b: 40 },
-        title: { text: "Signal", font: { size: 14 } },
-        xaxis: { title: { text: "Time" }, zeroline: false },
-        yaxis: { title: { text: "Value" }, zeroline: false },
+        ...PLOTLY_LAYOUT_DEFAULTS,
+        height: 200,
+        margin: { l: 44, r: 12, t: 6, b: 32 },
+        xaxis: {
+          ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
+          title: { text: "t", font: { size: 10 } },
+          zeroline: false,
+        },
+        yaxis: {
+          ...PLOTLY_LAYOUT_DEFAULTS.yaxis,
+          title: { text: "", font: { size: 10 } },
+          zeroline: false,
+        },
         shapes,
         hovermode: "closest",
       }}
-      config={{ responsive: true, displayModeBar: false }}
+      config={PLOTLY_CONFIG}
       useResizeHandler
       style={{ width: "100%" }}
-      onClick={(data) => {
-        if (onWindowClick && pipelineResult && data.points[0]) {
-          const clickedX = data.points[0].x as number;
-          const windowIdx = Math.round(
-            (clickedX - windowSize / 2) / stepSize
-          );
-          const clamped = Math.max(
-            0,
-            Math.min(windowIdx, pipelineResult.num_windows - 1)
-          );
-          onWindowClick(clamped);
-        }
-      }}
     />
   );
 }
+
+const SignalPlot = React.memo(SignalPlotInner);
+export default SignalPlot;

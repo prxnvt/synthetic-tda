@@ -1,7 +1,9 @@
 "use client";
 
+import React from "react";
 import dynamic from "next/dynamic";
 import { PipelineResponse, SignalResponse } from "@/lib/types";
+import { PLOTLY_LAYOUT_DEFAULTS, PLOTLY_CONFIG } from "@/lib/plotly-theme";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -10,21 +12,15 @@ interface AnomalyBarProps {
   signalData: SignalResponse | null;
 }
 
-export default function AnomalyBar({
-  pipelineResult,
-  signalData,
-}: AnomalyBarProps) {
-  if (!pipelineResult) {
-    return null;
-  }
+function AnomalyBarInner({ pipelineResult, signalData }: AnomalyBarProps) {
+  if (!pipelineResult) return null;
 
   const x = pipelineResult.window_centers;
   const anomalyVals = pipelineResult.anomalies.map((a) => (a ? 1 : 0));
   const colors = pipelineResult.anomalies.map((a) =>
-    a ? "rgba(244, 67, 54, 0.7)" : "rgba(76, 175, 80, 0.5)"
+    a ? "rgba(239, 68, 68, 0.7)" : "rgba(34, 197, 94, 0.35)"
   );
 
-  // Regime boundary shapes
   const regimeBoundaries: Partial<Plotly.Shape>[] = [];
   if (signalData) {
     for (let i = 1; i < signalData.regime_labels.length; i++) {
@@ -37,7 +33,7 @@ export default function AnomalyBar({
           x1: i,
           y0: 0,
           y1: 1,
-          line: { color: "red", dash: "dash", width: 1 },
+          line: { color: "#ef4444", dash: "dash", width: 1 },
         });
       }
     }
@@ -51,22 +47,41 @@ export default function AnomalyBar({
           y: anomalyVals,
           type: "bar",
           marker: { color: colors },
-          hovertemplate:
-            "center=%{x}<br>anomaly=%{y}<extra></extra>",
+          hovertemplate: "center=%{x}<br>anomaly=%{y}<extra></extra>",
         },
       ]}
       layout={{
-        height: 80,
-        margin: { l: 55, r: 20, t: 20, b: 25 },
-        xaxis: { title: { text: "Time (window center)" } },
-        yaxis: { visible: false, range: [0, 1.2] },
+        ...PLOTLY_LAYOUT_DEFAULTS,
+        height: 120,
+        margin: { l: 48, r: 12, t: 18, b: 32 },
+        title: {
+          text: "Anomaly Flags",
+          font: { size: 10, color: "#334155", family: "var(--font-geist-mono), monospace" },
+          x: 0.005,
+          xanchor: "left",
+        },
+        xaxis: {
+          ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
+          title: { text: "t (window center)", font: { size: 10, color: "#334155" } },
+        },
+        yaxis: {
+          ...PLOTLY_LAYOUT_DEFAULTS.yaxis,
+          visible: true,
+          range: [0, 1.2],
+          tickvals: [0, 1],
+          ticktext: ["normal", "anomaly"],
+          title: { text: "" },
+        },
         shapes: regimeBoundaries,
         bargap: 0,
         showlegend: false,
       }}
-      config={{ responsive: true, displayModeBar: false }}
+      config={PLOTLY_CONFIG}
       useResizeHandler
       style={{ width: "100%" }}
     />
   );
 }
+
+const AnomalyBar = React.memo(AnomalyBarInner);
+export default AnomalyBar;

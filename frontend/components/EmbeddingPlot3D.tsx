@@ -1,8 +1,11 @@
 "use client";
 
+import React from "react";
 import dynamic from "next/dynamic";
 import { EmbeddingResponse } from "@/lib/types";
+import { PLOTLY_LAYOUT_DEFAULTS, PLOTLY_CONFIG } from "@/lib/plotly-theme";
 import LoadingOverlay from "./LoadingOverlay";
+import { useIsExpanded } from "./ExpandablePanel";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -11,24 +14,26 @@ interface EmbeddingPlot3DProps {
   isLoading: boolean;
 }
 
-export default function EmbeddingPlot3D({
-  embedding,
-  isLoading,
-}: EmbeddingPlot3DProps) {
+function EmbeddingPlot3DInner({ embedding, isLoading }: EmbeddingPlot3DProps) {
+  const isExpanded = useIsExpanded();
+  const chartHeight = isExpanded ? Math.round(window.innerHeight * 0.75 - 80) : 260;
+  const points = embedding?.points || [];
+  const dim = points[0]?.length || 3;
+
   if (!embedding && !isLoading) {
     return (
-      <div className="h-72 flex items-center justify-center text-gray-400 text-sm">
-        Select a window to see embedding
+      <div
+        className="h-[260px] flex items-center justify-center"
+        style={{ fontFamily: "var(--mono)", color: "var(--muted)", fontSize: 11 }}
+      >
+        waiting for data
       </div>
     );
   }
 
-  const points = embedding?.points || [];
-  const dim = points[0]?.length || 3;
-
   return (
     <div className="relative">
-      {isLoading && <LoadingOverlay message="Computing embedding..." />}
+      {isLoading && <LoadingOverlay message="embedding..." />}
       {dim >= 3 ? (
         <Plot
           data={[
@@ -39,7 +44,7 @@ export default function EmbeddingPlot3D({
               type: "scatter3d",
               mode: "markers",
               marker: {
-                size: 2.5,
+                size: 2,
                 color: points.map((_, i) => i),
                 colorscale: "Viridis",
                 opacity: 0.8,
@@ -49,17 +54,17 @@ export default function EmbeddingPlot3D({
             },
           ]}
           layout={{
-            height: 300,
-            margin: { l: 0, r: 0, t: 25, b: 0 },
-            title: { text: "Takens Embedding", font: { size: 12 } },
+            ...PLOTLY_LAYOUT_DEFAULTS,
+            height: chartHeight,
+            margin: { l: 0, r: 0, t: 0, b: 0 },
             scene: {
-              xaxis: { title: { text: "x(t)" } },
-              yaxis: { title: { text: "x(t+τ)" } },
-              zaxis: { title: { text: "x(t+2τ)" } },
+              xaxis: { title: { text: "x(t)", font: { size: 9, color: "#334155" } }, gridcolor: "#e2e8f0" },
+              yaxis: { title: { text: "x(t+\u03c4)", font: { size: 9, color: "#334155" } }, gridcolor: "#e2e8f0" },
+              zaxis: { title: { text: "x(t+2\u03c4)", font: { size: 9, color: "#334155" } }, gridcolor: "#e2e8f0" },
               camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
             },
           }}
-          config={{ responsive: true, displayModeBar: false }}
+          config={PLOTLY_CONFIG}
           useResizeHandler
           style={{ width: "100%" }}
         />
@@ -72,7 +77,7 @@ export default function EmbeddingPlot3D({
               type: "scatter",
               mode: "markers",
               marker: {
-                size: 4,
+                size: 3,
                 color: points.map((_, i) => i),
                 colorscale: "Viridis",
                 opacity: 0.8,
@@ -80,13 +85,19 @@ export default function EmbeddingPlot3D({
             },
           ]}
           layout={{
-            height: 300,
-            margin: { l: 40, r: 20, t: 25, b: 40 },
-            title: { text: "Takens Embedding (2D)", font: { size: 12 } },
-            xaxis: { title: { text: "x(t)" } },
-            yaxis: { title: { text: "x(t+τ)" } },
+            ...PLOTLY_LAYOUT_DEFAULTS,
+            height: chartHeight,
+            margin: { l: 40, r: 12, t: 0, b: 32 },
+            xaxis: {
+              ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
+              title: { text: "x(t)", font: { size: 9, color: "#334155" } },
+            },
+            yaxis: {
+              ...PLOTLY_LAYOUT_DEFAULTS.yaxis,
+              title: { text: "x(t+\u03c4)", font: { size: 9, color: "#334155" } },
+            },
           }}
-          config={{ responsive: true, displayModeBar: false }}
+          config={PLOTLY_CONFIG}
           useResizeHandler
           style={{ width: "100%" }}
         />
@@ -94,3 +105,6 @@ export default function EmbeddingPlot3D({
     </div>
   );
 }
+
+const EmbeddingPlot3D = React.memo(EmbeddingPlot3DInner);
+export default EmbeddingPlot3D;
