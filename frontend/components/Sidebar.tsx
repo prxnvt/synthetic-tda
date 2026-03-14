@@ -74,10 +74,10 @@ export default function Sidebar({ state }: SidebarProps) {
       {/* Header */}
       <div>
         <h1
-          className="text-sm font-bold tracking-tight"
-          style={{ fontFamily: "var(--mono)", color: "var(--foreground)" }}
+          className="font-bold tracking-tight"
+          style={{ fontSize: 35, fontFamily: "var(--mono)", color: "var(--foreground)" }}
         >
-          synthetic-tda
+          Synthetic-tda
         </h1>
         <div className="mt-2">
           <PipelineInfo />
