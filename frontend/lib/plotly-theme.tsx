@@ -7,14 +7,14 @@ export const PLOTLY_LAYOUT_DEFAULTS: Partial<Plotly.Layout> = {
     color: "#e2e8f0",
   },
   xaxis: {
-    gridcolor: "#21262d",
-    zerolinecolor: "#30363d",
-    linecolor: "#30363d",
+    gridcolor: "#4a5568",
+    zerolinecolor: "#64748b",
+    linecolor: "#64748b",
   },
   yaxis: {
-    gridcolor: "#21262d",
-    zerolinecolor: "#30363d",
-    linecolor: "#30363d",
+    gridcolor: "#4a5568",
+    zerolinecolor: "#64748b",
+    linecolor: "#64748b",
   },
   hoverlabel: {
     bgcolor: "#1e293b",

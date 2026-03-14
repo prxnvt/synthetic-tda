@@ -154,9 +154,9 @@ function EmbeddingPlot3DInner({ embedding, isLoading }: EmbeddingPlot3DProps) {
               height: chartHeight,
               margin: { l: 0, r: 0, t: 0, b: 0 },
               scene: {
-                xaxis: { title: { text: "x(t)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#21262d" },
-                yaxis: { title: { text: "x(t+\u03c4)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#21262d" },
-                zaxis: { title: { text: "x(t+2\u03c4)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#21262d" },
+                xaxis: { title: { text: "x(t)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#4a5568" },
+                yaxis: { title: { text: "x(t+\u03c4)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#4a5568" },
+                zaxis: { title: { text: "x(t+2\u03c4)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#4a5568" },
                 camera: { eye: forcedEye ?? DEFAULT_EYE },
               },
             }}
