@@ -22,13 +22,13 @@ export default function Home() {
             <div className="stale-overlay">
               <div className="loading-pill">
                 <div className="w-3 h-3 border-[1.5px] border-gray-400 border-t-transparent rounded-full animate-spin" />
-                generating...
+                Generating...
               </div>
             </div>
           )}
           {state.isSignalStale && state.signalData && !state.isGenerating && (
             <div className="stale-overlay">
-              <span>parameters changed — regenerate</span>
+              <span>Parameters changed — Regenerate</span>
             </div>
           )}
           <SignalPlot
@@ -53,7 +53,7 @@ export default function Home() {
               <div className="stale-overlay">
                 <div className="loading-pill">
                   <div className="w-3 h-3 border-[1.5px] border-gray-400 border-t-transparent rounded-full animate-spin" />
-                  computing persistent homology...
+                  Computing persistent homology...
                 </div>
               </div>
             )}
@@ -72,7 +72,7 @@ export default function Home() {
             <div className="sec-label mb-1">Topological Features</div>
             {state.isPipelineStale && !state.isRunning && (
               <div className="stale-overlay">
-                <span>parameters changed — re-run analysis</span>
+                <span>Parameters changed — Re-run analysis</span>
               </div>
             )}
             <FeatureTimeSeries
@@ -93,7 +93,7 @@ export default function Home() {
             style={{ fontFamily: "var(--mono)" }}
           >
             <span className="text-xs" style={{ color: "var(--muted)" }}>
-              generate a signal to begin
+              Generate a signal to begin
             </span>
           </div>
         )}
@@ -104,7 +104,7 @@ export default function Home() {
             style={{ fontFamily: "var(--mono)" }}
           >
             <span className="text-xs" style={{ color: "var(--muted)" }}>
-              run the analysis pipeline to see results
+              Run the analysis pipeline to see results
             </span>
           </div>
         )}

@@ -27,7 +27,7 @@ function PersistenceDiagramInner({
         className="h-[260px] flex items-center justify-center"
         style={{ fontFamily: "var(--mono)", color: "var(--muted)", fontSize: 11 }}
       >
-        waiting for data
+        Waiting for data
       </div>
     );
   }
@@ -87,8 +87,8 @@ function PersistenceDiagramInner({
   }
 
   return (
-    <div className="relative">
-      {isLoading && <LoadingOverlay message="persistence..." />}
+    <div className="relative" style={{ height: chartHeight }}>
+      {isLoading && <LoadingOverlay message="Persistence..." />}
       <Plot
         data={traces}
         layout={{

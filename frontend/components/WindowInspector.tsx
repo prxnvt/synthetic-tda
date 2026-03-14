@@ -28,7 +28,7 @@ function WindowSignalChart({
 
   return (
     <div className="relative">
-      {isStale && <LoadingOverlay message="adjusting..." />}
+      {isStale && <LoadingOverlay message="Adjusting..." />}
       <Plot
         data={[
           {
@@ -132,7 +132,7 @@ export default function WindowInspector({ state }: WindowInspectorProps) {
           className="text-[11px] whitespace-nowrap flex items-center gap-1.5"
           style={{ fontFamily: "var(--mono)" }}
         >
-          <span style={{ color: "var(--muted)" }}>window</span>
+          <span style={{ color: "var(--muted)" }}>Window</span>
           <span>
             {localIdx + 1}/{pipelineResult.num_windows}
           </span>
@@ -140,7 +140,7 @@ export default function WindowInspector({ state }: WindowInspectorProps) {
             t=[{labelStart},{labelEnd})
           </span>
           {isAnomaly && (
-            <span className="text-red-500 font-medium ml-1">anomaly</span>
+            <span className="text-red-500 font-medium ml-1">Anomaly</span>
           )}
         </div>
         <input

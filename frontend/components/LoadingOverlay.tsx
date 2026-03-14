@@ -1,7 +1,7 @@
 "use client";
 
 export default function LoadingOverlay({
-  message = "computing...",
+  message = "Computing...",
 }: {
   message?: string;
 }) {

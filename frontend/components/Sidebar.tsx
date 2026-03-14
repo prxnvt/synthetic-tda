@@ -214,10 +214,10 @@ export default function Sidebar({ state }: SidebarProps) {
           disabled={state.isGenerating}
         >
           {state.isGenerating
-            ? "generating..."
+            ? "Generating..."
             : state.isSignalStale
-            ? "regenerate signal"
-            : "generate signal"}
+            ? "Regenerate signal"
+            : "Generate signal"}
         </button>
       </section>
 
@@ -317,10 +317,10 @@ export default function Sidebar({ state }: SidebarProps) {
           disabled={!state.signalData || state.isRunning}
         >
           {state.isRunning
-            ? "running..."
+            ? "Running..."
             : state.isPipelineStale
-            ? "re-run analysis"
-            : "run analysis"}
+            ? "Re-run analysis"
+            : "Run analysis"}
         </button>
       </section>
 
@@ -338,19 +338,19 @@ export default function Sidebar({ state }: SidebarProps) {
             style={{ fontFamily: "var(--mono)", color: "var(--muted)" }}
           >
             <div className="flex justify-between">
-              <span>computation</span>
+              <span>Computation</span>
               <span style={{ color: "var(--foreground)" }}>
                 {state.pipelineResult.computation_time_ms.toFixed(0)}ms
               </span>
             </div>
             <div className="flex justify-between">
-              <span>windows</span>
+              <span>Windows</span>
               <span style={{ color: "var(--foreground)" }}>
                 {state.pipelineResult.num_windows}
               </span>
             </div>
             <div className="flex justify-between">
-              <span>anomalies</span>
+              <span>Anomalies</span>
               <span
                 style={{
                   color:
