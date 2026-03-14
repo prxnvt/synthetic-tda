@@ -84,7 +84,7 @@ function SignalPlotInner({
           y: signalData.signal,
           type: "scatter",
           mode: "lines",
-          line: { width: 1, color: "#334155" },
+          line: { width: 1, color: "#e2e8f0" },
           hovertemplate: "t=%{x}<br>value=%{y:.4f}<extra></extra>",
         },
       ]}

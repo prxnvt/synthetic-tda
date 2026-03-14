@@ -49,7 +49,7 @@ function PersistenceDiagramInner({
     y: [lo, maxDeath],
     type: "scatter",
     mode: "lines",
-    line: { color: "#cbd5e1", dash: "dash", width: 1 },
+    line: { color: "#30363d", dash: "dash", width: 1 },
     showlegend: false,
     hoverinfo: "skip",
   });
@@ -97,19 +97,19 @@ function PersistenceDiagramInner({
           margin: { l: 40, r: 12, t: 0, b: 36 },
           xaxis: {
             ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
-            title: { text: "Birth (\u03b5)", font: { size: 10, color: "#334155" } },
+            title: { text: "Birth (\u03b5)", font: { size: 10, color: "#e2e8f0" } },
             zeroline: false,
           },
           yaxis: {
             ...PLOTLY_LAYOUT_DEFAULTS.yaxis,
-            title: { text: "Death (\u03b5)", font: { size: 10, color: "#334155" } },
+            title: { text: "Death (\u03b5)", font: { size: 10, color: "#e2e8f0" } },
             zeroline: false,
           },
           legend: {
             x: 0.02,
             y: 0.98,
-            bgcolor: "rgba(255,255,255,0.9)",
-            bordercolor: "#cbd5e1",
+            bgcolor: "rgba(22,27,34,0.9)",
+            bordercolor: "#30363d",
             borderwidth: 1,
             font: { size: 10 },
           },

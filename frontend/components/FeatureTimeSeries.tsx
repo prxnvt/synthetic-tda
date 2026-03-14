@@ -73,7 +73,7 @@ function FeatureTimeSeriesInner({
               margin: { l: 48, r: 12, t: 18, b: 16 },
               title: {
                 text: cfg.label,
-                font: { size: 10, color: "#334155", family: "var(--font-geist-mono), monospace" },
+                font: { size: 10, color: "#e2e8f0", family: "var(--font-geist-mono), monospace" },
                 x: 0.005,
                 xanchor: "left",
               },

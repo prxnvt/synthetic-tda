@@ -4,21 +4,21 @@ export const PLOTLY_LAYOUT_DEFAULTS: Partial<Plotly.Layout> = {
   font: {
     family: "var(--font-geist-sans), system-ui, sans-serif",
     size: 11,
-    color: "#334155",
+    color: "#e2e8f0",
   },
   xaxis: {
-    gridcolor: "#e2e8f0",
-    zerolinecolor: "#cbd5e1",
-    linecolor: "#cbd5e1",
+    gridcolor: "#21262d",
+    zerolinecolor: "#30363d",
+    linecolor: "#30363d",
   },
   yaxis: {
-    gridcolor: "#e2e8f0",
-    zerolinecolor: "#cbd5e1",
-    linecolor: "#cbd5e1",
+    gridcolor: "#21262d",
+    zerolinecolor: "#30363d",
+    linecolor: "#30363d",
   },
   hoverlabel: {
     bgcolor: "#1e293b",
-    bordercolor: "#334155",
+    bordercolor: "#30363d",
     font: { color: "#f8fafc", size: 11, family: "var(--font-geist-mono), monospace" },
   },
 };

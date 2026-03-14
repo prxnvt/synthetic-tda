@@ -45,7 +45,7 @@ function WindowSignalChart({
           margin: { l: 40, r: 10, t: 4, b: 32 },
           xaxis: {
             ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
-            title: { text: "t", font: { size: 9, color: "#334155" } },
+            title: { text: "t", font: { size: 9, color: "#e2e8f0" } },
           },
           yaxis: {
             ...PLOTLY_LAYOUT_DEFAULTS.yaxis,

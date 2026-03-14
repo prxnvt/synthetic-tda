@@ -101,7 +101,7 @@ export default function Sidebar({ state }: SidebarProps) {
           style={{
             borderColor: "var(--sidebar-border)",
             fontFamily: "var(--mono)",
-            background: "white",
+            background: "var(--sidebar-bg)",
           }}
           value={state.signalParams.signal_type}
           onChange={(e) => state.setSignalType(e.target.value as SignalType)}
@@ -132,7 +132,7 @@ export default function Sidebar({ state }: SidebarProps) {
                 style={{
                   borderColor: "var(--sidebar-border)",
                   fontFamily: "var(--mono)",
-                  background: "white",
+                  background: "var(--sidebar-bg)",
                 }}
                 value={state.signalParams.params[cfg.key] as string}
                 onChange={(e) =>
@@ -196,7 +196,7 @@ export default function Sidebar({ state }: SidebarProps) {
             style={{
               borderColor: "var(--sidebar-border)",
               fontFamily: "var(--mono)",
-              background: "white",
+              background: "var(--sidebar-bg)",
             }}
             value={state.signalParams.seed}
             onChange={(e) => state.updateSeed(parseInt(e.target.value) || 0)}
@@ -283,7 +283,7 @@ export default function Sidebar({ state }: SidebarProps) {
             style={{
               borderColor: "var(--sidebar-border)",
               fontFamily: "var(--mono)",
-              background: "white",
+              background: "var(--sidebar-bg)",
             }}
             value={state.pipelineParams.embedding_dimension}
             onChange={(e) =>

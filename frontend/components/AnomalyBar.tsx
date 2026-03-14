@@ -56,13 +56,13 @@ function AnomalyBarInner({ pipelineResult, signalData }: AnomalyBarProps) {
         margin: { l: 48, r: 12, t: 18, b: 32 },
         title: {
           text: "Anomaly Flags",
-          font: { size: 10, color: "#334155", family: "var(--font-geist-mono), monospace" },
+          font: { size: 10, color: "#e2e8f0", family: "var(--font-geist-mono), monospace" },
           x: 0.005,
           xanchor: "left",
         },
         xaxis: {
           ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
-          title: { text: "t (window center)", font: { size: 10, color: "#334155" } },
+          title: { text: "t (window center)", font: { size: 10, color: "#e2e8f0" } },
         },
         yaxis: {
           ...PLOTLY_LAYOUT_DEFAULTS.yaxis,

@@ -31,7 +31,7 @@ const ZoomButton = ({
     style={{
       padding: 3,
       borderRadius: 3,
-      background: "rgba(255,255,255,0.85)",
+      background: "rgba(22,27,34,0.85)",
       border: "1px solid var(--panel-border)",
       color: "var(--muted)",
       cursor: "pointer",
@@ -154,9 +154,9 @@ function EmbeddingPlot3DInner({ embedding, isLoading }: EmbeddingPlot3DProps) {
               height: chartHeight,
               margin: { l: 0, r: 0, t: 0, b: 0 },
               scene: {
-                xaxis: { title: { text: "x(t)", font: { size: 9, color: "#334155" } }, gridcolor: "#e2e8f0" },
-                yaxis: { title: { text: "x(t+\u03c4)", font: { size: 9, color: "#334155" } }, gridcolor: "#e2e8f0" },
-                zaxis: { title: { text: "x(t+2\u03c4)", font: { size: 9, color: "#334155" } }, gridcolor: "#e2e8f0" },
+                xaxis: { title: { text: "x(t)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#21262d" },
+                yaxis: { title: { text: "x(t+\u03c4)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#21262d" },
+                zaxis: { title: { text: "x(t+2\u03c4)", font: { size: 9, color: "#e2e8f0" } }, gridcolor: "#21262d" },
                 camera: { eye: forcedEye ?? DEFAULT_EYE },
               },
             }}
@@ -189,11 +189,11 @@ function EmbeddingPlot3DInner({ embedding, isLoading }: EmbeddingPlot3DProps) {
             margin: { l: 40, r: 12, t: 0, b: 32 },
             xaxis: {
               ...PLOTLY_LAYOUT_DEFAULTS.xaxis,
-              title: { text: "x(t)", font: { size: 9, color: "#334155" } },
+              title: { text: "x(t)", font: { size: 9, color: "#e2e8f0" } },
             },
             yaxis: {
               ...PLOTLY_LAYOUT_DEFAULTS.yaxis,
-              title: { text: "x(t+\u03c4)", font: { size: 9, color: "#334155" } },
+              title: { text: "x(t+\u03c4)", font: { size: 9, color: "#e2e8f0" } },
             },
           }}
           config={EMBEDDING_CONFIG}
