@@ -2,7 +2,7 @@ export const PLOTLY_LAYOUT_DEFAULTS: Partial<Plotly.Layout> = {
   paper_bgcolor: "transparent",
   plot_bgcolor: "transparent",
   font: {
-    family: "var(--font-geist-sans), system-ui, sans-serif",
+    family: "var(--font-geist-mono), \"SF Mono\", \"Fira Code\", monospace",
     size: 11,
     color: "#e2e8f0",
   },
