@@ -71,21 +71,14 @@ export default function Home() {
           <section className="relative">
             <div className="flex items-baseline gap-6 mb-3">
               <div className="sec-label">Topological Features</div>
-              <div className="flex items-baseline gap-4" style={{ fontFamily: "var(--mono)", fontSize: 11 }}>
-                <span>
-                  <span style={{ color: "var(--muted)" }}>windows </span>
-                  <span style={{ color: "var(--foreground)", fontWeight: 600 }}>{state.pipelineResult.num_windows}</span>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 16.5, color: "var(--muted)" }}>
+                <span style={{ color: "var(--foreground)", fontWeight: 600 }}>{state.pipelineResult.num_windows}</span>
+                {" windows, "}
+                <span style={{ color: state.pipelineResult.anomalies.filter(Boolean).length > 0 ? "#ef4444" : "#22c55e", fontWeight: 600 }}>
+                  {state.pipelineResult.anomalies.filter(Boolean).length}
                 </span>
-                <span>
-                  <span style={{ color: "var(--muted)" }}>anomalies </span>
-                  <span style={{ color: state.pipelineResult.anomalies.filter(Boolean).length > 0 ? "#ef4444" : "#22c55e", fontWeight: 600 }}>
-                    {state.pipelineResult.anomalies.filter(Boolean).length}
-                  </span>
-                </span>
-                <span>
-                  <span style={{ color: "var(--muted)" }}>computed in </span>
-                  <span style={{ color: "var(--foreground)", fontWeight: 600 }}>{state.pipelineResult.computation_time_ms.toFixed(0)}ms</span>
-                </span>
+                {" anomalies, "}
+                <span style={{ color: "var(--foreground)", fontWeight: 600 }}>{state.pipelineResult.computation_time_ms.toFixed(0)}ms</span>
               </div>
             </div>
             {state.isPipelineStale && !state.isRunning && (
